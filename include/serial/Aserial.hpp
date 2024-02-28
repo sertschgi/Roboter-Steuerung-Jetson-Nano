@@ -24,7 +24,7 @@ private:
     const speed_t baudRate_;
     bool connected_ {};
     int device_ {};
-    map<const char *, bind> listenForMap_ {};
+    map<const char *, function<void()>> listenForMap_ {};
     vector<thread> listenFuncThreads_ {};
     thread connectionThread_ {};
     void listenFor_();
@@ -33,8 +33,8 @@ public:
     Aserial(const char * port, const speed_t baudRate);
     ~Aserial();
     void write(const char * data);
-    void listenFor(map<const char *, bind> keyCallbackMap);
-    void listenFor(const char * key, bind callback);
+    void listenFor(map<const char *, function<void()>>  keyCallbackMap);
+    void listenFor(const char * key, function<void()> callback);
 };
 
 

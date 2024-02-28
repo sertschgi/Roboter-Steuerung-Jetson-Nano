@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 #include "tensorflow/Tfml.hpp"
 #include "video/Vstream.hpp"
+#include "serial/Aserial.hpp"
 
 
 using namespace std;
@@ -12,11 +14,34 @@ int main(int argc, char* argv[]) {
 
     Vstream stream("/dev/video0");
     Detector det(CHECKPOINT_PATH, LABELMAP_PATH);
+    Aserial serial(100, 100000);
 
     det.detect(stream);
 
-    vector<DetObj> detection = det.detection();
+    while (stream.running())
+    {
+        vector<DetObj> detection = det.detection();
 
-    for (const DetObj & obj : detection)
-        cout << obj.label << obj.points << endl;
+        sort(
+            detection.begin(),
+            detection.end(),
+            [](const DetObj & fobj, const DetObj & nobj) {
+                    return fobj.points.y > nobj.points.y;
+                }
+                );
+
+        const DetObj & obj = detection.front();
+
+        serial.write(
+                string("R"
+                        + to_string(obj.points.x)
+                        + ";"
+                        + to_string(obj.points.y)
+                        + ";"
+                        + to_string(obj.points.height)
+                        + ";"
+                        + to_string(obj.points.width)
+                        + "\n").c_str()
+                );
+    }
 }

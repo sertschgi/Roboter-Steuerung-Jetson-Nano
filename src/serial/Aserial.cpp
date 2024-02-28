@@ -1,6 +1,7 @@
 //
 // Created by SERT on 29.01.2024.
 //
+#include <functional>
 
 #include "serial/Aserial.hpp"
 
@@ -56,19 +57,19 @@ void Aserial::listenFor_()
         while (read(this->device_, &c, 1) > 0 && c != '\n')
             buffer[bytesRead++] = c;
 
-        bind funcBind = this->listenForMap[buffer];
+        function<void()> callback = this->listenForMap_[buffer];
 
-        if (funcBind != nullptr)
-            this->listenFuncThreads_.emplace_back(thread(funcBind));
+        if (callback != nullptr)
+            this->listenFuncThreads_.emplace_back(thread([&](){callback();}));
     }
 }
 
-void Aserial::listenFor(map<const char *, bind> keyCallbackMap)
+void Aserial::listenFor(map<const char *, function<void()>> keyCallbackMap)
 {
     this->listenForMap_.merge(keyCallbackMap);
 }
 
-void Aserial::listenFor(const char * key, bind callback)
+void Aserial::listenFor(const char * key, function<void()> callback)
 {
     this->listenForMap_.insert({key, callback});
 }

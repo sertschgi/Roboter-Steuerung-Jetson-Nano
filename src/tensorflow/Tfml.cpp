@@ -2,6 +2,7 @@
 // Created by SERT on 11.01.2024.
 //
 
+#include <filesystem>
 #include "tensorflow/Tfml.hpp"
 
 
@@ -159,7 +160,7 @@ vector<string> tfml::Detector::toLabels_(const vector<uint8_t> & labelNumbers) c
     const double xmax = ((cx+(w/2.f))/this->dims_.x) * this->frameDims.x;
     const double ymax = ((cy+(h/2.f))/this->dims_.y) * this->frameDims.y;
 
-    return { (int) xmin, (int) ymin, (int) (xmax-xmin), (int) (ymax-ymin) };
+    return Rect {(int) xmin, (int) ymin, (int) (xmax-xmin), (int) (ymax-ymin) };
 }
 
 vector<Rect> tfml::Detector::intVecToRectVec_(const vector<int> & intVec) const
