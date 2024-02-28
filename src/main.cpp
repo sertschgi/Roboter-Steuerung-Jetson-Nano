@@ -6,15 +6,14 @@
 #include "video/Vstream.hpp"
 #include "serial/Aserial.hpp"
 
-
 using namespace std;
 using namespace tfml;
 
 int main(int argc, char* argv[]) {
 
-    Vstream stream("/dev/video0");
+    Vstream stream(VIDEO_SOURCE);
     Detector det(CHECKPOINT_PATH, LABELMAP_PATH);
-    Aserial serial(100, 100000);
+    Aserial serial(SERIAL_PORT, 100000);
 
     det.detect(stream);
 
