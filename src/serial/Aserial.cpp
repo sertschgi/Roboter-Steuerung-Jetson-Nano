@@ -5,7 +5,7 @@
 
 #include "serial/Aserial.hpp"
 
-Aserial::Aserial(const char * port, const speed_t baudRate)
+Aserial::Aserial(const char * port, speed_t baudRate)
 {
     this->port_ = port;
     this->baudRate_ = baudRate;
@@ -74,7 +74,7 @@ void Aserial::listenFor(const char * key, function<void()> callback)
     this->listenForMap_.insert({key, callback});
 }
 
-void Aserial::write(const char * data)
+void Aserial::out(const char * data)
 {
-    writeSerialPort(data, sizeof(data));
+    write(this->device_, data, sizeof(data));
 }

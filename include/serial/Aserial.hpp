@@ -21,7 +21,7 @@ using namespace std;
 class Aserial {
 private:
     const char * port_;
-    const speed_t baudRate_;
+    speed_t baudRate_ {};
     bool connected_ {};
     int device_ {};
     map<const char *, function<void()>> listenForMap_ {};
@@ -30,9 +30,9 @@ private:
     void listenFor_();
 
 public:
-    Aserial(const char * port, const speed_t baudRate);
+    Aserial(const char * port, speed_t baudRate);
     ~Aserial();
-    void write(const char * data);
+    void out(const char * data);
     void listenFor(map<const char *, function<void()>>  keyCallbackMap);
     void listenFor(const char * key, function<void()> callback);
 };

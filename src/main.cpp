@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
 
         const DetObj & obj = detection.front();
 
-        serial.write(
+        serial.out(
                 string("R"
                         + to_string(obj.points.x)
                         + ";"
