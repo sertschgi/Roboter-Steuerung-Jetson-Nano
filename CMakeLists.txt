@@ -29,7 +29,7 @@ add_executable(Roboter_Steuerung_jetson_nano src/main.cpp
         src/serial/Aserial.cpp)
 
 # link the libraries so that they build
-target_link_libraries(Roboter_Steuerung_jetson_nano OpenCV)
+target_link_libraries(Roboter_Steuerung_jetson_nano ${OpenCV_LIBS})
 target_link_libraries(Roboter_Steuerung_jetson_nano tensorflow-lite)
 
 # add the include for the projects cpp files
