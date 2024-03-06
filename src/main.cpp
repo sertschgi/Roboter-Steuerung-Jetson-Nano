@@ -57,6 +57,8 @@ int main(int argc, char* argv[]) {
 
     det.detect(stream);
 
+    cout << "now detecting..."
+
     while (stream.running())
     {
         vector<DetObj> detection = det.detection();

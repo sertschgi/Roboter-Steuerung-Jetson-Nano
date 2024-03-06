@@ -7,6 +7,7 @@
 Vstream::Vstream(const String& filename)
 {
     this->stream_ = VideoCapture(filename);
+    cout << "initialized VideoCapture.";
 }
 
 Vstream::~Vstream()
@@ -27,6 +28,7 @@ void Vstream::start()
     this->streamThread_.join();
     this->running_ = true;
     this->streamThread_ = thread([&]{this->read_();});
+    cout << "started VideoCapture.";
 }
 
 void Vstream::stop()
@@ -35,6 +37,7 @@ void Vstream::stop()
     this->guiThread_.join();
     this->streamThread_.join();
     this->stream_.release();
+    cout << "stopped VideoCapture.";
 }
 
 void Vstream::gui_()

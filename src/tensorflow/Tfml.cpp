@@ -66,7 +66,6 @@ tfml::Detector::Detector(const std::string & checkpointPath, const string & labe
     this->dims_.y = this->inputTensor_->dims->data[1];
     this->dims_.x = this->inputTensor_->dims->data[2];
     this->dims_.x = this->inputTensor_->dims->data[3];
-
 }
 
 tfml::Detector::~Detector()

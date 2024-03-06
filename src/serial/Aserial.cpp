@@ -36,6 +36,8 @@ Aserial::Aserial(const char * port, speed_t baudRate)
 
     this->connected_ = true;
     this->connectionThread_ = thread([&](){this->listenFor_();});
+
+    cout << "Established serial connection.";
 }
 
 Aserial::~Aserial()
