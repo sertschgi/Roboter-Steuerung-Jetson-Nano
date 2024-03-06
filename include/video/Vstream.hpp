@@ -12,6 +12,7 @@
 #include "opencv2/video.hpp"
 
 #include <thread>
+#include <iostream>
 
 using namespace std;
 using namespace cv;
