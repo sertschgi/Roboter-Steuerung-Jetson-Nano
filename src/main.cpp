@@ -30,6 +30,18 @@ int main(int argc, char* argv[]) {
                 );
 
         const DetObj & obj = detection.front();
+        
+         
+        cout << string("R"
+                        + to_string(obj.points.x)
+                        + ";"
+                        + to_string(obj.points.y)
+                        + ";"
+                        + to_string(obj.points.height)
+                        + ";"
+                        + to_string(obj.points.width)
+                        + "\n").c_str()
+                );
 
         serial.out(
                 string("R"

@@ -2,12 +2,13 @@
 // Created by SERT on 11.01.2024.
 //
 
-#include "../../include/video/Vstream.hpp"
+#include "video/Vstream.hpp"
 
 Vstream::Vstream(const String& filename)
 {
     this->stream_ = VideoCapture(filename);
 }
+
 Vstream::~Vstream()
 {
     this->stop();

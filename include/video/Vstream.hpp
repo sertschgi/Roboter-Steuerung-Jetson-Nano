@@ -11,6 +11,8 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/video.hpp"
 
+#include <thread>
+
 using namespace std;
 using namespace cv;
 

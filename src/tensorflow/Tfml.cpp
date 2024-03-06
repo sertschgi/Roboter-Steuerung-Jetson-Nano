@@ -40,7 +40,7 @@ tfml::Detector::Detector(const std::string & checkpointPath, const string & labe
     };
 
     unique_ptr<TfLiteDelegate> delegate {
-        TfLiteGpuDelegateV2Create(options.get())
+	    TfLiteGpuDelegateV2Create(options.get())
     };
 
     InterpreterBuilder interpBuild { *this->model_, BuiltinOpResolver() };
