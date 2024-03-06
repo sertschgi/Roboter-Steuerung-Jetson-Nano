@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
 
     det.detect(stream);
 
-    cout << "now detecting..."
+    cout << "now detecting...";
 
     while (stream.running())
     {
@@ -96,4 +96,5 @@ int main(int argc, char* argv[]) {
                         + "\n").c_str()
                 );
     }
+    cout << "finished.";
 }
