@@ -7,8 +7,8 @@
 Vstream::Vstream(const String& filename)
 {
     int apiID = cv::CAP_ANY;
-    cap.open(filename, apiID);
-    if (!cap.isOpened()) {
+    this->stream_.open(filename, apiID);
+    if (!this->stream_.isOpened()) {
         cerr << "ERROR! Unable to open camera\n";
         return;
     }
