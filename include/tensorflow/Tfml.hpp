@@ -28,7 +28,7 @@ using namespace std;
 using namespace tflite::impl;
 using namespace tflite::delegates;
 using namespace tflite::ops::builtin;
-using namespace tflite::delegates
+using namespace tflite::delegates;
 
 using dimArray = Point3_<uint16_t>;
 
