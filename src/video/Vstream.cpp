@@ -10,7 +10,7 @@ Vstream::Vstream(const String& filename)
     cap.open(filename, apiID);
     if (!cap.isOpened()) {
         cerr << "ERROR! Unable to open camera\n";
-        return -1;
+        return;
     }
     cout << "initialized VideoCapture.";
 }
