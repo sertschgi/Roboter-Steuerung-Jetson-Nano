@@ -4,3 +4,6 @@
 [submodule "external/tensorflow"]
 	path = external/tensorflow
 	url = https://github.com/tensorflow/tensorflow.git
+[submodule "external/ClParser"]
+	path = external/ClParser
+	url = https://github.com/sertschgi/ClParser.git
