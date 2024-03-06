@@ -23,7 +23,7 @@ class Vstream {
 private:
     bool running_ {};
     Vframe frame_ {};
-    VideoCapture stream_;
+    VideoCapture stream_ {};
     thread streamThread_ {};
     thread guiThread_ {};
     void read_();
