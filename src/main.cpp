@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 
     Vstream stream(videoSource.value());
     Detector det(checkpointPath.value(), labelmapPath.value());
-    Aserial serial(serialPort.calue(), stoi(baudRate.value()));
+    Aserial serial(serialPort.cvalue(), stoi(baudRate.value()));
 
     det.detect(stream);
 
