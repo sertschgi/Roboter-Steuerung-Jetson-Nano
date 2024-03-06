@@ -2,6 +2,8 @@
 #include <string>
 #include <algorithm>
 
+#include "clparser/Parser.hpp"
+
 #include "tensorflow/Tfml.hpp"
 #include "video/Vstream.hpp"
 #include "serial/Aserial.hpp"
@@ -11,9 +13,47 @@ using namespace tfml;
 
 int main(int argc, char* argv[]) {
 
-    Vstream stream(VIDEO_SOURCE);
-    Detector det(CHECKPOINT_PATH, LABELMAP_PATH);
-    Aserial serial(SERIAL_PORT, 100000);
+    ClPosArg videoSource("video_source_pos_arg", true);
+    ClOption videoSourceOption("video_source_option",
+                               { "v", "videoSource" },
+                               "Specify a video source.",
+                               { videoSource });
+
+    ClPosArg checkpointPath("checkpoint_path_pos_arg", true);
+    ClOption checkpointPathOption("checkpoint_path_option",
+                                  {"c", "checkpointPath"},
+                                  "Specify the folder where your checkpoint is located in.",
+                                  { checkpointPath });
+
+    ClPosArg labelmapPath("labelmap_path_pos_arg", true);
+    ClOption labelmapPathOption("labelmap_path_option",
+                               { "l", "labelmapPath" },
+                               "Specify the folder where your labelmap is located in.",
+                               { labelmapPath });
+
+    ClPosArg serialPort("serial_port_pos_arg", true);
+    ClOption serialPortOption("serial_port_option",
+                               { "s", "serialPort" },
+                               "Specify a port for serial communication.",
+                               { serialPort });
+
+    ClPosArg baudRate("baud_rate_pos_arg", true);
+    ClOption baudRateOption("baud_rate_option",
+                               { "b", "baudRate" },
+                               "Specify a baud rate for serial communication.",
+                               { serialPort });
+
+    ClParser parser({ videoSourceOption, checkpointPathOption, labelmapPathOption, serialPortOption, baudRateOption});
+    parser.addAppName("aijnano");
+    parser.addAppVersion("0.0.1");
+    parser.addHelpOption();
+    parser.addVersionOption();
+
+    parser.parse(argc, argv);
+
+    Vstream stream(videoSource.value());
+    Detector det(checkpointPath.value(), labelmapPath.value());
+    Aserial serial(serialPort.value(), stoi(baudRate.value()));
 
     det.detect(stream);
 
@@ -41,7 +81,6 @@ int main(int argc, char* argv[]) {
                         + ";"
                         + to_string(obj.points.width)
                         + "\n").c_str()
-                );
 
         serial.out(
                 string("R"

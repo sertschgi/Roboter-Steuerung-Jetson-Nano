@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(Roboter_Steuerung_jetson_nano)
+project(aijnano)
 
 set(CMAKE_CXX_STANDARD 17)
 set(TFLITE_ENABLE_GPU true)
@@ -12,6 +12,7 @@ set(TFLITE_SOURCE_DIR "${TENSORFLOW_SOURCE_DIR}/tensorflow/lite")
 add_subdirectory(${TFLITE_SOURCE_DIR}) # from tensorflow-lite
 # add_subdirectory("${CMAKE_CURRENT_BINARY_DIR}/tensorflow-lite")
 add_subdirectory(external/opencv) # from OpenCV
+add_subdirectory(external/ClParser)
 
 # Include the needed directories
 include_directories(${TENSORFLOW_SOURCE_DIR})
@@ -26,7 +27,7 @@ FOREACH(module ${modules})
 ENDFOREACH()
 
 # Add sources
-add_executable(Roboter_Steuerung_jetson_nano src/main.cpp
+add_executable(aijnano src/main.cpp
         include/tensorflow/Tfml.hpp
         src/tensorflow/Tfml.cpp
         include/video/Vstream.hpp
@@ -35,10 +36,10 @@ add_executable(Roboter_Steuerung_jetson_nano src/main.cpp
         src/serial/Aserial.cpp)
 
 # link the libraries so that they build
-target_link_libraries(Roboter_Steuerung_jetson_nano tensorflow-lite opencv_imgcodecs opencv_imgproc opencv_videoio opencv_highgui opencv_video)
+target_link_libraries(aijnano ClParser tensorflow-lite opencv_imgcodecs opencv_imgproc opencv_videoio opencv_highgui opencv_video)
 
 # add the include for the projects cpp files
-target_include_directories(Roboter_Steuerung_jetson_nano PUBLIC
+target_include_directories(aijnano PUBLIC
         include
 )
 
