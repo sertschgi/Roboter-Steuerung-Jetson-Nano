@@ -51,6 +51,8 @@ int main(int argc, char* argv[]) {
 
     parser.parse(argc, argv);
 
+    cout << "parsing finished...";
+
     Vstream stream(videoSource.value());
     Detector det(checkpointPath.value(), labelmapPath.value());
     Aserial serial(serialPort.cvalue(), stoi(baudRate.value()));
