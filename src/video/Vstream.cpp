@@ -6,15 +6,19 @@
 
 string Vstream::gstPipeline_() const
 {
-    return "nvarguscamerasrc sensor_id=" + to_string(this->deviceId_) +
-	   " ! video/x-raw(memory:NVMM), width=" + to_string(this->inputWidth_) +
+    /* return "nvarguscamerasrc sensor_id=" + to_string(this->deviceId_) +
+	   " ! video/x-raw(memory:NVMM),width=" + to_string(this->inputWidth_) +
 	   ", height=" + to_string(this->inputHeight_) +
 	   ", framerate=" + this->streamFramerate_ +
 	   ", format=" + this->inputFormat_ +
 	   " ! nvvidconv flip-method=" + to_string(this->flipMethod_) +
-	   " ! video/x-raw, format=BGRx, width=" + to_string(this->outputWidth_) +
+	   " ! video/x-raw(memory:NVMM),format=I420, width=" + to_string(this->outputWidth_) +
 	   ", height=" + to_string(this->outputHeight_) +
-	   ", pixel-aspect-ratio=1/1 ! videoconvert ! video/x-raw, format=BGR, appsink drop=1";
+	   ", pixel-aspect-ratio=1/1 ! videoconvert ! queue ! appsink"; */
+	   
+    return "nvarguscamerasrc ! video/x-raw(memory:NVMM),width=1920, height=1080, framerate=30/1, format=NV12 ! nvvidconv flip-method=2 ! videoconvert ! video/x-raw, format=BGR ! videoconvert ! queue ! appsink max-buffers=1 drop=true";
+	
+    //"gst-launch-1.0 nvarguscamerasrc sensor-id=0 ! 'video/x-raw(memory:NVMM),width=1920, height=1080, framerate=30/1, format=NV12' ! nvvidconv ! 'video/x-raw(memory:NVMM),format=I420' ! appsink sync=0 	   
 }
 
 Vstream::Vstream(

@@ -14,9 +14,6 @@
 #include <thread>
 #include <iostream>
 
-#include <Argus/Argus.h>
-#include <EGLStream/EGLStream.h>
-
 using namespace std;
 using namespace cv;
 

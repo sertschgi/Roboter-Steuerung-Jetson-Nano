@@ -15,6 +15,8 @@ Aserial::Aserial(const char * port, speed_t baudRate)
         std::cerr << "Aserial-error: Couldn't open serial port." << std::endl;
         exit(1);
     }
+    
+    cout << "opened serial device." << endl;  
 
     termios tty;
     memset(&tty, 0, sizeof(tty));
@@ -22,6 +24,8 @@ Aserial::Aserial(const char * port, speed_t baudRate)
         std::cerr << "Aserial-error: Couldn't get serial port attributes." << std::endl;
         exit(1);
     }
+    
+    cout << "got attributes from serial port." << endl;
 
     cfsetospeed(&tty, baudRate);
     cfsetispeed(&tty, baudRate);

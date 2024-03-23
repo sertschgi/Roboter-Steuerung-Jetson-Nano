@@ -51,17 +51,22 @@ int main(int argc, char* argv[]) {
 
     parser.parse(argc, argv);
 
-    cout << "parsing finished...";
+    cout << "parsing finished..." << endl;
 
-    Vstream stream;
-    Detector det(checkpointPath.value(), labelmapPath.value());
+    Vstream videoStream { };
+    Detector det { checkpointPath.value(), labelmapPath.value() };
+    
+    cout << "Detector initialized." << endl;
+    
     Aserial serial(serialPort.cvalue(), stoi(baudRate.value()));
+    
+    cout << "initialized Vstream, Detector and Aserial instances." << endl;
 
-    det.detect(stream);
+    det.detect(&videoStream);
 
-    cout << "now detecting...";
+    cout << "now detecting..." << endl;
 
-    while (stream.running())
+    while (videoStream.running())
     {
         vector<DetObj> detection = det.detection();
 

@@ -2,7 +2,6 @@
 // Created by SERT on 11.01.2024.
 //
 
-#include <filesystem>
 #include "tensorflow/Tfml.hpp"
 
 
@@ -31,24 +30,53 @@ tfml::Detector::Detector(const std::string & checkpointPath, const string & labe
         this->labels_.emplace_back(label);
 
     labelmap.close();
+    
+    cout << checkpointPath.c_str() << endl;
 
-    this->model_ = FlatBufferModel::BuildFromFile(checkpointPath.c_str());
+    this->model_ = FlatBufferModel::BuildFromFile(
+    	checkpointPath.c_str(), 
+    	&this->tfModelErrorReporter_);
     if (!this->model_) throw tfml::errors::ModelInitializeError();
 
     unique_ptr<TfLiteGpuDelegateOptionsV2> options {
-        make_unique<TfLiteGpuDelegateOptionsV2>(TfLiteGpuDelegateOptionsV2Default())
+        make_unique<TfLiteGpuDelegateOptionsV2>( TfLiteGpuDelegateOptionsV2Default() )
     };
 
     unique_ptr<TfLiteDelegate> delegate {
-	    TfLiteGpuDelegateV2Create(options.get())
+	    TfLiteGpuDelegateV2Create( options.get( ) )
     };
+    
+    if ( ! delegate )
+    {
+    	cerr << "Delegate-creation failed!" << endl;
+    	exit( 1 );
+    }
+    
+    cout << "Delegate created" << endl;
+    
+    tflite::ops::builtin::BuiltinOpResolver defOpResolver { };
 
-    InterpreterBuilder interpBuild { *this->model_, BuiltinOpResolver() };
+    tflite::InterpreterBuilder interpBuild { *this->model_.get(), defOpResolver };
+    
+    cout << "Created instance for InterpreterBuilder, gave BuiltinOpResolver()" << endl;
+    
     interpBuild.AddDelegate(delegate.get());
+    
+    cout << "Added a delegate." << endl;
 
-    interpBuild(&this->interpreter_);
+    interpBuild( & this->interpreter_ );
+    
+    if ( ! this->interpreter_ )
+    {
+    	cerr << "Interpreter-build failed!" << endl;
+    	exit( 1 );
+    }
+
+    cout << "Built interpreter" << endl;
 
     this->interpreter_->AllocateTensors();
+    
+    cout << "Allocated tensors" << endl;
 
     this->inputTensor_ = unique_ptr<TfLiteTensor>(
             this->interpreter_->input_tensor(0)
@@ -65,7 +93,7 @@ tfml::Detector::Detector(const std::string & checkpointPath, const string & labe
 
     this->dims_.y = this->inputTensor_->dims->data[1];
     this->dims_.x = this->inputTensor_->dims->data[2];
-    this->dims_.x = this->inputTensor_->dims->data[3];
+    this->dims_.x = this->inputTensor_->dims->data[3]; 
 }
 
 tfml::Detector::~Detector()
@@ -102,10 +130,10 @@ void tfml::Detector::detect(const Vframe& frame)
     this->frameDims.y = frame.rows;
 }
 
-void tfml::Detector::detect(const Vstream & stream)
+void tfml::Detector::detect(const Vstream * stream)
 {
     detectThread.join();
-    detectThread = thread([&]() {while (stream.running()) this->detect(stream.frame());});
+    detectThread = thread([&]() {while (stream->running()) this->detect(stream->frame());});
 }
 
 size_t getNumberOfElements(const unique_ptr<TfLiteTensor> & tensor)

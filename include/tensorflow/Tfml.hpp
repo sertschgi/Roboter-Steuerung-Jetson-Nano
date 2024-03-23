@@ -11,25 +11,24 @@
 #include <string>
 #include <exception>
 #include <thread>
-#include <experimental/filesystem>
+#include <filesystem>
 #include <fstream>
 #include <algorithm>
 
 #include "config/config.hpp"
-#include "tensorflow/lite/interpreter.h"
-#include "tensorflow/lite/model.h"
-#include "tensorflow/lite/delegates/gpu/delegate.h"
-#include "tensorflow/lite/kernels/register.h"
-#include "tensorflow/lite/op_resolver.h"
-
 #include "video/Vstream.hpp"
 
-using namespace std;
-using namespace tflite::impl;
-using namespace tflite::delegates;
-using namespace tflite::ops::builtin;
-using namespace tflite::delegates;
+#include "tensorflow/lite/model.h"
+#include "tensorflow/lite/delegates/gpu/delegate.h"
+#include "tensorflow/lite/op_resolver.h"
+#include "tensorflow/lite/builtin_ops.h"
+#include "tensorflow/lite/kernels/register.h"
+#include "tensorflow/lite/interpreter.h"
+#include "tensorflow/lite/interpreter_builder.h"
+#include "tensorflow/lite/interpreter_options.h"
 
+using namespace std;
+using namespace tflite;
 using dimArray = Point3_<uint16_t>;
 
 namespace tfml {
@@ -71,6 +70,7 @@ namespace tfml {
         unique_ptr<TfLiteTensor> scoresTensor_ {};
         unique_ptr<TfLiteTensor> labelsTensor_ {};
         unique_ptr<TfLiteTensor> boxesTensor_ {};
+        StderrReporter tfModelErrorReporter_ {};
         dimArray frameDims {};
         vector<string> labels_ {};
         dimArray dims_ {};
@@ -84,7 +84,7 @@ namespace tfml {
         Detector(const string & checkpointPath, const string & labelmapPath);
         ~Detector();
         void detect(const Vframe & frame);
-        void detect(const Vstream & stream);
+        void detect(const Vstream * stream);
         [[nodiscard]] vector<DetObj> detection(float threshold = 0.5) const;
         
     };

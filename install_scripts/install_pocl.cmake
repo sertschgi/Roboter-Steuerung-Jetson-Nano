@@ -1,0 +1,2 @@
+execute_process(COMMAND ${CMAKE_SOURCE_DIR}/install_pocl.sh
+	WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
