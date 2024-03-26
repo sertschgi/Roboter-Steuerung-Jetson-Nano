@@ -10,6 +10,8 @@ set(TFLITE_ENABLE_GPU true)
 set(TENSORFLOW_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/tensorflow")
 set(TFLITE_SOURCE_DIR "${TENSORFLOW_SOURCE_DIR}/tensorflow/lite")
 
+set(POCL_CLANG_VERSION 7 CACHE STRING "The llvm/clang version your using. ( <= 7 requiered)")
+
 # Add CMakeLists.txt
 add_subdirectory(${TFLITE_SOURCE_DIR}) # from tensorflow-lite
 # add_subdirectory("${CMAKE_CURRENT_BINARY_DIR}/tensorflow-lite")
@@ -21,7 +23,7 @@ ExternalProject_Add(
 	PREFIX external/pocl
 	GIT_REPOSITORY https://github.com/pocl/pocl.git
 	GIT_TAG release_1_2
-	CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=/usr/local/pocl -DENABLE_CUDA=ON -DWITH_LLVM_CONFIG=/usr/bin/llvm-config -DLLVM_OPT=/usr/bin/opt -DLLVM_LLC=/usr/bin/llc -DLLVM_AS=/usr/bin/llvm-as -DLLVM_LINK=/usr/bin/llvm-link -DLLVM_LLI=/usr/bin/lli -DCLANG=/usr/bin/clang -DCLANGXX=/usr/bin/clang++)
+	CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=/usr/local/pocl -DENABLE_CUDA=ON -DWITH_LLVM_CONFIG=/usr/bin/llvm-config-${POCL_CLANG_VERSION} -DLLVM_OPT=/usr/bin/opt-${POCL_CLANG_VERSION} -DLLVM_LLC=/usr/bin/llc-${POCL_CLANG_VERSION} -DLLVM_AS=/usr/bin/llvm-as-${POCL_CLANG_VERSION} -DLLVM_LINK=/usr/bin/llvm-link-${POCL_CLANG_VERSION} -DLLVM_LLI=/usr/bin/lli-${POCL_CLANG_VERSION} -DCLANG=/usr/bin/clang-${POCL_CLANG_VERSION} -DCLANGXX=/usr/bin/clang++-${POCL_CLANG_VERSION})
 
 set(POCL_INSTALL_SCRIPT_PATH "${CMAKE_SOURCE_DIR}/install_scripts/install_pocl.sh")
 
